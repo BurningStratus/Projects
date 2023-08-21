@@ -1,0 +1,6 @@
+kanta_str = input("Kanta: ")
+korkeus_str = input("Korkeus: ")
+kanta = float(kanta_str)
+korkeus = float(korkeus_str)
+area = (kanta*2 + korkeus*2)
+print("Piiri on: " + str(area))
