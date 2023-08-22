@@ -5,7 +5,7 @@ print("Roulette. You win if you get number greater than 95.")
 
 credit = float(random.randint(0, 100))
 
-score = 0
+score = 0 + 2
 
 print("########################################")
 print(f"Your number is: {credit:6.0f}")
