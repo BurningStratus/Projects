@@ -2,7 +2,7 @@
 # 3-digit codes which each number vry 0-9
 # 4-digit codes which each number vry 1-6
 
-#random.int(a, b, c)
+# random.int(a, b, c)
 
 import random
 
