@@ -7,14 +7,13 @@ lnum = 0
 while num != "":
     num = int(num)
 
-    if num > bnum:
-        bnum = num
-        print("BUCK", bnum)
-
-    elif num < bnum:
+    if num < lnum:
         lnum = num
         print("NUMB", num)
-    num = input("Number: ")
 
+    elif num > bnum:
+        bnum = num
+        print("BUCK", bnum)
+    num = input("Number: ")
 else:
     print(bnum, lnum)
