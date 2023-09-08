@@ -7,10 +7,12 @@
 #  global program shows all attempts and nums it got
 
 import random
+import time
 thr = 0
 num = 0
 def dicer():
     print("Throwing dice...")
+    time.sleep(1.4)
     dice = random.randint(1,6)
     print(f"I threw a dice and got {dice}")
     return dice
