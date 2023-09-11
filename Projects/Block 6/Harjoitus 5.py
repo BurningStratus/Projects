@@ -7,12 +7,14 @@ userlist = []
 
 
 def noprime(user_list):  # function to evaluate everything from a user-def. list
-    user_list.sort()
+    #  user_list.sort()
     for i in user_list:
         if i % 2 != 0:
             user_list.remove(i)
-        elif i % 2 == 1:
-            user_list.remove(i)
+
+    return user_list
+        # elif i % 2 == 1:
+        #     user_list.remove(i)
 
 
 sum_list = input("Integer: ")
@@ -25,5 +27,9 @@ while sum_list != "":
 
 # calling a function and calculating results.
 print(userlist)
+
 noprime(userlist)
+
 print(f"User-defined list without non-prime numbers:\n{userlist}.")
+
+#  https://realpython.com/python-return-statement/#returning-vs-printing
