@@ -1,6 +1,9 @@
 # Almanac of bad programming.
+# 1[MODIFYING GLOBAL VARIABLES]
+# 2[IMPLICIT RETURN VALUE]
 
-# 1.[MODIFYING GLOBAL VARIABLES]
+
+# 1[MODIFYING GLOBAL VARIABLES]
 
 # When creating a function that needs to make/modify a list, don't modify the initial one.
 # Create a new instead.
@@ -14,13 +17,31 @@
 # 2. I made a function that wasn't self-contained
 # 3. Function returned an implicit value(not a meaningful one)
 
-# Bad sport ahead    --->
-list_1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-def noprime(list_1):  # function to evaluate everything from a list.
+# Bad sport ahead  --->
+"""
+list_1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] # given list
+def noprime(list_1):  # function to evaluate everything from the list_1.
     for i in list_1:
         if i % 2 == 0:
-            list_1.remove(i)
+            list_1.remove(i) # noprime() modifies the existing list_1
     return list_1
+"""
+# End of bad sport <---
 
-# End of bad sport 1.<---
+# 2[IMPLICIT RETURN VALUE]
 
+# Inside a function, if function can't reach none of the conditions to return a reasonable RETURN value,
+# it will return an implicit "return" value, which is " None ".
+# Bad sport ahead  --->
+"""
+def my_abs(number):
+    if number > 0:
+        return number
+    elif number < 0:
+        return -number
+
+print(my_abs(-15)) # This returns 15
+print(my_abs(15))  # This returns 15 
+print(my_abs(0))   # This returns None
+"""
+# End of bad sport <---
