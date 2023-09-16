@@ -16,6 +16,16 @@ def addtodict(group):  # function to add new records
     return None
 
 
+def remove(group):
+    record = input("specify record to remove: ")
+    if record in group:
+        del group[record]
+        print("record deleted")
+    else:
+        print("err: record not found")
+    return None
+
+
 def show(group):  # shows all records
     print("...retrieving records...")
     for i in group:
@@ -35,7 +45,7 @@ def find(group):  # find in database(easie thunn SQL)
 
 
 def help_cmd():  # shows all commands and common usage
-    print("Available prompts are:\nhelp\nadd\nshow\nfind\nexit")
+    print("Available prompts are:\nhelp\nadd\nremove\nshow\nfind\nexit")
     print("Usage: [command] + ENTER\n")
     return None
 
@@ -51,6 +61,9 @@ while cmd != "exit":  # executable to revolve functions
         cmd = input("command: ")
     elif cmd == "add":
         addtodict(airports)
+        cmd = input("command: ")
+    elif cmd == "remove":
+        remove(airports)
         cmd = input("command: ")
     elif cmd == "show":
         show(airports)
