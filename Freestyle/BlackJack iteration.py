@@ -35,7 +35,7 @@ def add_card(hand):  # add the card to hand
 
 def show_hands(hand_d, hand_p):
     for i in hand_p:
-        print(i)
+        hand_pl = str(i)
 
     for i in hand_d:
         print(i)
@@ -68,7 +68,7 @@ while True:
     while carder != "Stay":
         if carder == "H":
             add_card(hand_plr)
-            show_hands()
+            show_hands(hand_dlr, hand_plr)
             carder = input("Stay/Hit: ")
         else:
             print("prompt not recognized")
