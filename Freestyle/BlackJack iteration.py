@@ -35,25 +35,25 @@ def add_card(hand):  # add the card to hand
 
 def show_hands(hand_d, hand_p):
     for i in hand_p:
-        print(hand_p[value_retrieve(i)])
+        print(i)
 
     for i in hand_d:
-        print(hand_d[value_retrieve(i)])
+        print(i)
     return None
 
 #print(value_retrieve('Q'))
 
 user = input("!!!")
-
-add_card(hand_plr)
-add_card(hand_plr)
-add_card(hand_dlr)
-print(hand_plr)
-print(hand_dlr)
-
-show_hands(hand_dlr, hand_plr)
-
-
+#
+# add_card(hand_plr)
+# add_card(hand_plr)
+# add_card(hand_dlr)
+# print(hand_plr)
+# print(hand_dlr)
+#
+# show_hands(hand_dlr, hand_plr)
+#
+#
 
 
 while True:
