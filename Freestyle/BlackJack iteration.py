@@ -200,12 +200,12 @@ while gamble == "":
             elif dealer_sum < 21 and player_sum < 21:
                 if 21 >= dealer_sum > player_sum:
                     game_state = -1
-                    print('\033[31mYou lost!\033[0m')  # red text
+                    print('\033[31mBet lost!\033[0m')  # red text
                     eurobucks = bet_payout(eurobucks, bet)
 
                 elif 21 >= player_sum > dealer_sum:
                     game_state = 1
-                    print("\033[32mYou win!\033[0m")
+                    print("\033[32mWin!\033[0m")
                     eurobucks = bet_payout(eurobucks, bet)
                 else:
                     print("something broke for some reason")
