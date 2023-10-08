@@ -1,7 +1,7 @@
 # Almanac of bad programming.
 # 1[MODIFYING GLOBAL VARIABLES]
 # 2[IMPLICIT RETURN VALUE]
-
+# 3[LIST COPYING]
 
 # 1[MODIFYING GLOBAL VARIABLES]
 
@@ -45,4 +45,29 @@ print(my_abs(15))  # This returns 15
 print(my_abs(0))   # This returns None
 """
 # End of bad sport <---
-11
+
+# 3[LIST COPYING]
+
+# To copy a list, use extend. list_1 = list_to_be_copied Doesn't work.
+# Modified list_to_be_copied will alter original list.
+# play_deck.extend(deck) should be used. So, play_deck is extended by missing parts of deck.
+
+# Bad sport ahead  --->
+"""
+deck = ["A", "K", "Q", "J", 10, 9, 8, 7, 6, 5, 4, 3, 2,
+        "A", "K", "Q", "J", 10, 9, 8, 7, 6, 5, 4, 3, 2,
+        "A", "K", "Q", "J", 10, 9, 8, 7, 6, 5, 4, 3, 2,
+        "A", "K", "Q", "J", 10, 9, 8, 7, 6, 5, 4, 3, 2]
+        
+play_deck = deck
+
+while game:
+    *functions*
+    play_deck used
+    end of functions
+    play_deck is altered
+    
+    # because play_deck = deck, deck is also altered.
+    
+"""
+# End of bad sport <---
