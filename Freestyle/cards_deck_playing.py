@@ -7,22 +7,25 @@ from french_cards import return_clubs as r_cl
 from french_cards import return_spades as r_sp
 ###### end of imports
 """
-Black Spade   9824 == 
-White Heart   9825
-White Diamond 9826
-Black Club    9827
+Black Spade   9824 == SP
+White Heart   9825 == HT
+White Diamond 9826 == DM
+Black Club    9827 == CL
 """
 '''
 TODO PRIMARY OBJECTIVE: teach computer to evaluate cards with different suits and take Trumps into account.
-TODO PRIMARY OBJECTIVE: add cards to table
+TODO PRIMARY OBJECTIVE: fix add to table function. It wont add all cards correctly. JDM != 1102. FIX NEEDED
 
+DONE PRIMARY OBJECTIVE: add cards to table
 DONE trump suited cards change values also in hands of the players.
 DONE consider if other file is needed for cards: yes, we don't really need it. 
 DONE show trumps as usual cards DONE
 
 TODO SECONDARY: show 14, 13, 12, 11 as A, K, Q, J
 '''
-######### storage of values >
+
+# DEBUG ===> should be deleted after ready
+######### storage
 cd_suits = {"SPADE": 9824, "HEART": 9825, "DIAMOND": 9826, "CLUB": 9827}
 cd_vals = ["A", "K", "Q", "J", 10, 9, 8, 7, 6, 5, 4, 3, 2]
 ''' courier's stash
@@ -147,9 +150,13 @@ deck = ['1401', '1301', '1201', '1101',
         '1304', '1204', '1104', '1004',
         '0904', '0804', '0704', '0604',
         '0504', '0404', '0304', '0204']     ### original deck. card example::  1402: [14] is card's value(ACE), [02] is suit(HEARTS).
-deck_translate = {"A": "14", "K": "13", "Q": "12", "J": "11"}
+
+translate_pics = {"A": "14", "K": "13", "Q": "12", "J": "11"}
+translate_suits = {"HT": "01", "DM": "02", "CL": "03", "SP": "04"}
+# translate is used to convert cards from literal form to integers
+
 play_deck = []   ### used for game
-table = dict()   ### playing table
+table = {}       ### playing table
 table_dump = []  ### dump
 
 trump_card = []  ### trump card
@@ -158,7 +165,7 @@ player_hand = []
 bot_hand = []
 
 
-######### end of storage    <
+######### end of storage
 
 
 ######### functions
@@ -172,13 +179,6 @@ def value_retrieve(card) -> int:
     else:
         card_value = int(str(card[0] + card[1]))  # 1 + 2 = str(12) ==> int(12) = 12.
         return card_value
-
-# def card_translate(card) -> int:
-#     if len(card) == 3:
-#
-#     elif len(card) == 4:
-#
-#     return
 
 
 def add_card(hand) -> None:
@@ -199,13 +199,46 @@ def add_card(hand) -> None:
     return None
 
 
-def add_to_table(card):
+def add_to_table(card_adder, hand, player):
+    if len(card_adder) < 3 or len(card_adder) > 4:
+        return "wrong card"
 
-    return
+    card_suit = ""
+
+    if card_adder[0] in translate_pics:
+        # if card is a picture card, the prog will sweep through dictionary and recover the value of the card.
+        card_suit = card_adder[1:3]
+        card_adder = translate_pics[card_adder[0]]
+    # but if it won't find corresponding letter, then card is integer already.
+
+    if len(card_adder) == 3:
+        val_memory = card_adder[0]
+        suit_memory = card_adder[1:3]
+        card_adder = "0" + val_memory + suit_memory
+
+    for cards in translate_suits:
+        if card_adder[2:4] == cards:
+            card_suit = translate_suits[cards]
+            break
+    # if card_adder[1:3] in translate_suits:
+    #     card_suit = translate_suits[card_adder[1:3]]
+
+    card_translated = card_adder[0:2] + card_suit
+
+    print(card_adder, card_translated)  # DEBUG
+
+    if card_translated in hand:
+        hand.remove(card_translated)
+        table[card_translated] = player
+        print(f"{card_translated} is added by {player}")
+        return table
+    else:
+        print(f"there is no such card as {card_translated}")
+        return "wrong card"
 
 
 def show_picture(card) -> str:  # show picture and show hand are interconnected.
-    if card[2:] == "01":  # shows hearts
+    if card[2:] == "01":    # shows hearts
         picture = r_ht()  # calls func from another file
         return picture
     elif card[2:] == "02":  # shows diamonds
@@ -222,12 +255,13 @@ def show_picture(card) -> str:  # show picture and show hand are interconnected.
 
 
 def show_hand(hand, player) -> str:  # should be inserted into print to show return value. print(show_hand)
-    string_to_show = ''              # 1 == player or table, 0 == opponent
+    string_to_show = ''              # 1 == player, 0 == opponent, 2 == special case to show trump card.
     show = ''                        # if player, cards are shown with their values. If opponent, them cards are covered.
     covered_card = chr(9632)
 
     if player == 1:
         for playing_card in hand:
+            # checks if card is 0X-type or XX-type to use the correct value.
             if playing_card[0] == "0":
                 show = str(playing_card[1])
             elif playing_card[0] == "2":
@@ -245,6 +279,18 @@ def show_hand(hand, player) -> str:  # should be inserted into print to show ret
             string_to_show += " " + covered_card
 
         return string_to_show
+    elif player == 2:
+        playing_card = hand[0]
+        if playing_card[0] == "0":
+            show = str(playing_card[1])
+        elif playing_card[0] == "2":
+            show = str(int(playing_card[0:2]) - 20)
+        elif playing_card[0] == "1":
+            show = str(playing_card[0] + playing_card[1])  # 1 + 2 = str(12) ==> int(12) = 12.
+        elif playing_card[0] == "3":
+            show = str(int(playing_card[0] + playing_card[1]) - 20)
+        card = show_picture(playing_card) + show  # calls show picture func to get picture in ASCII
+        return card
     else:
         print("something broke for some reason")
         return "err"
@@ -257,16 +303,17 @@ def card_comparator():
 
 def create_trump(trump_c, pl_deck) -> None:            # makes up trump suit and card.
     pl_deck = play_deck
+    print(len(play_deck))
 
-    rand_indx = random.randint(0, len(pl_deck))   # 1. prog chooses random index of a card
+    rand_indx = random.randint(0, len(pl_deck)-1)   # 1. prog chooses random index of a card
     trump_c.append(pl_deck[rand_indx])                # 2. trump is added in its own list
     pl_deck.remove(pl_deck[rand_indx])                # 3. chosen card is removed from the play_deck
 
-    print(f"creating trumps deck ...")
+    # print(f"creating trumps deck ...")                # DEBUG
     trumpcreation_iterator(pl_deck)
-    print(f"creating trumps player hand ...")
+    # print(f"creating trumps player hand ...")         # DEBUG
     trumpcreation_iterator(player_hand)
-    print(f"creating trumps opponent hand ...")
+    # print(f"creating trumps opponent hand ...")       # DEBUG
     trumpcreation_iterator(bot_hand)
     return None
 
@@ -283,13 +330,13 @@ def trumpcreation_iterator(iterable):
 
         if all_cards[2:] == trumpet[2:]:
             # if suit is the same as trump card's, the card will get trump value (+20).
-            print(f"found card for trumping: {all_cards}")
+            # print(f"found card for trumping: {all_cards}")    # DEBUG
             memory_value = int(all_cards[0:2]) + 20           # chosen card's value + 20
             memory_value = str(memory_value) + all_cards[2:]  # suit is added
 
             iterable.remove(all_cards)                          # remove old card
             iterable.append(memory_value)                       # add new value
-            print(f"value changed to: {memory_value}\n")
+            # print(f"value changed to: {memory_value}\n")      # DEBUG
     return iterable
 
 ######### end of functions
@@ -306,8 +353,6 @@ def trumpcreation_iterator(iterable):
 while True:
     spinner = 1
     play_deck.extend(deck)
-
-    #  print(play_deck)
 
     for cards_for_start in range(12):
         if spinner % 2 == 0:
@@ -331,7 +376,7 @@ while True:
 
     print(f"Your hand: {show_hand(player_hand, 1)}\n")
     print(f"Opponent:  {show_hand(bot_hand, 0)}\n")
-    print(f"Table:     {show_hand(table, 1)}       {show_hand(trump_card, 1)}")
+    print(f"Table:[{show_hand(trump_card, 2)}]  {show_hand(table, 1)}")
 
     print(show_hand(table, 1))
     # print(len(play_deck))
@@ -341,12 +386,17 @@ while True:
     # simplified. Player always goes first. should be changed.
 
     carder = input("ADD(3HT, ACL, ASP ... ):>")
+    card_check = add_to_table(carder, player_hand, "Jacker")
 
-    if len(carder) == 3:
-        pass
-    elif len(carder) == 4:
-        pass
+    while card_check == "wrong card" or carder != "END":
+        carder = input("ADD(3HT, ACL, ASP ... ):>")
+        card_check = add_to_table(carder, player_hand, "Jacker")
+
+    print(f"Table:     {show_hand(table, 1)} ")
+
+    input('\033[32mPress ENTER to continue...\033[0m')
 
 else:
     pass
+
 ######### end o' game
