@@ -155,7 +155,7 @@ translate_pics = {"A": "14", "K": "13", "Q": "12", "J": "11"}
 translate_suits = {"HT": "01", "DM": "02", "CL": "03", "SP": "04"}
 # translate is used to convert cards from literal form to integers
 
-play_deck = []   ### used for game
+play_deck = []   ### used for real game
 table = []       ### playing table
 table_dump = []  ### dump
 
