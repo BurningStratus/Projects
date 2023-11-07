@@ -22,7 +22,10 @@ deck = ["A", "K", "Q", "J", 10, 9, 8, 7, 6, 5, 4, 3, 2,
         "A", "K", "Q", "J", 10, 9, 8, 7, 6, 5, 4, 3, 2,
         "A", "K", "Q", "J", 10, 9, 8, 7, 6, 5, 4, 3, 2,
         "A", "K", "Q", "J", 10, 9, 8, 7, 6, 5, 4, 3, 2]
-play_deck = deck
+
+#play_deck = deck  THIS IS NOT OKAY
+# play_deck = []
+# play_deck.extend(deck)
 
 ######################
 game_state = 0
@@ -92,7 +95,7 @@ def add_card(hand, p_deck):  # add the card to hand. Used for dealer and player.
     if val > 0:  # if there is at least one, you can take it
         val -= 1
         rand_indx = random.randint(0, val)  # prog just chooses random index of a card.
-        hand.append(deck[rand_indx])
+        hand.append(p_deck[rand_indx])
         p_deck.remove(p_deck[rand_indx])
     else:
         print("Deck is empty. Are you insane?")
@@ -111,17 +114,30 @@ def show_hands(hand):
 gamble = input("Wanna gamble? [ENTER]/N: ")
 
 while gamble == "":
+
+
+
     if eurobucks <= 0:
         print("You don't have enough money.")
         debt -= -(eurobucks)
 
     bet = int(input("Enter your bet: "))
+
+
     eurobucks -= bet
 
     print(f"You have {eurobucks}$ in your wallet.\n")
 
     while game_state == 0:
         game_state = 0  # this one is to track if the game is going, lost or won. 0 = going, 1 = win, -1 = lost
+
+
+
+        play_deck = []
+        play_deck.extend(deck)
+
+        print(len(play_deck))
+        print(len(deck))
 
         hand_dlr = []
         hand_plr = []
@@ -210,6 +226,10 @@ while gamble == "":
                 else:
                     print("something broke for some reason")
     print(f"You have {eurobucks}$ in your wallet.")
+
+    print(f"END play deck: {len(play_deck)}")
+    print(len(deck))
+
     gamble = input("Play Again? [ENTER]/N:")
 
     if gamble == "":

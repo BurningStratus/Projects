@@ -326,9 +326,15 @@ def show_hand(hand: list, player: int) -> str:
     covered_card = chr(9632)
 
     if player == 1:
+
+        if hand and type(hand[0]) == tuple:
+            hand = hand[0][0]
+
+        print(hand)
+
         for playing_card in hand:
             # checks if card is 0X-type or XX-type to use the correct value.
-            if playing_card[0][0] == "0":
+            if playing_card[0] == "0":
                 show = str(playing_card[1])
             elif playing_card[0] == "1":
                 show = str(playing_card[0] + playing_card[1])  # 1 + 2 = str(12) ==> int(12) = 12.
@@ -348,7 +354,7 @@ def show_hand(hand: list, player: int) -> str:
                     show = cards
                     break
 
-            card = show_picture(playing_card) + show  # calls show picture func to get picture in ASCII
+            card = show + show_picture(playing_card)  # calls show picture func to get picture in ASCII
             string_to_show += ' ' + card
         return string_to_show
     elif player == 0:
@@ -368,6 +374,7 @@ def show_hand(hand: list, player: int) -> str:
             show = str(int(playing_card[0] + playing_card[1]) - 20)
         else:
             return "im broken. row 324"
+
         for cards in translate_pics:
             if translate_pics[cards] == show:
                 show = cards
@@ -391,7 +398,7 @@ def create_trump(trump_c: list) -> None:            # makes up trump suit and ca
     pl_deck = play_deck
     print(len(play_deck))  # DEBUG
 
-    rand_indx = random.randint(0, len(pl_deck)-1)   # 1. prog chooses random index of a card
+    rand_indx = random.randint(0, len(pl_deck) - 1)   # 1. prog chooses random index of a card
     trump_c.append(pl_deck[rand_indx])                # 2. trump is added in its own list
     pl_deck.remove(pl_deck[rand_indx])                # 3. chosen card is removed from the play_deck
 
